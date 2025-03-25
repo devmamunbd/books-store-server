@@ -57,6 +57,23 @@ async function run() {
     });
 
     // update a book in db: put method
+    app.patch("/update-book/:id", async (req, res) => {
+      const id = req.params.id;
+      const updateBook = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateDoc = {
+        $set: {
+          ...updateBook,
+        },
+      };
+      const result = await booksCollections.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
+      res.send(result);
+    });
 
     // delete a book from db: delete method
     app.delete("/delete-book/:id", async (req, res) => {
