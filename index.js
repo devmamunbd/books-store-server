@@ -59,6 +59,13 @@ async function run() {
     // update a book in db: put method
 
     // delete a book from db: delete method
+    app.delete("/delete-book/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await booksCollections.deleteOne({
+        _id: new ObjectId(id),
+      });
+      res.send(result);
+    });
 
     await client.db("admin").command({ ping: 1 });
     console.log(
