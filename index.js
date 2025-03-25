@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 
 // middleware
@@ -48,6 +48,17 @@ async function run() {
       const result = await booksCollections.find().toArray(books);
       res.send(result);
     });
+
+    // get a single book from db: get method
+    app.get("/single-book/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await booksCollections.findOne({ _id: new ObjectId(id) });
+      res.send(result);
+    });
+
+    // update a book in db: put method
+
+    // delete a book from db: delete method
 
     await client.db("admin").command({ ping: 1 });
     console.log(
